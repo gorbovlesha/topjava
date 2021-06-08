@@ -9,14 +9,14 @@
 <hr>
 <h2>Meals</h2>
 
-<table>
+<table border="1">
 <tr>
     <th>Date</th>
     <th>Description</th>
     <th>Calories</th>
 </tr>
     <c:forEach var="meals" items="${requestScope.mealsList}">
-        <tr>
+        <tr style="color: ${meals.excess ? 'red' : 'greenyellow'}">
 <td>${meals.dateTime}</td>
 <td>${meals.description}</td>
 <td>${meals.calories}</td>
