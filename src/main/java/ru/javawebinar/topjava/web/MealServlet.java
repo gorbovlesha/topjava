@@ -21,7 +21,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(UserServlet.class);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss", Locale.ROOT);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,6 +34,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("post meals validation");
+        req.setCharacterEncoding("UTF8");
 
         if (requestIsValid(req)) {
             doGet(req, resp);
@@ -43,7 +43,13 @@ public class MealServlet extends HttpServlet {
         final String calories = req.getParameter("calories");
         final String localDateTime = req.getParameter("localDateTime");
 
-        final Meal meal = new Meal(LocalDateTime.parse(localDateTime, formatter), description, Integer.parseInt(calories));
+        System.out.println(description);
+        System.out.println(calories);
+        System.out.println(localDateTime);
+
+        final Meal meal = new Meal(LocalDateTime.parse(localDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                description,
+                Integer.parseInt(calories));
         MealsUtil.addNewMeal(meal);
         doGet(req, resp);
 

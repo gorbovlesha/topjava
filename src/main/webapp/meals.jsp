@@ -6,7 +6,6 @@
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
-<h3><a href="mealInfo.jsp">Create new meal</a></h3>
 <hr>
 <h2>Meals</h2>
 
@@ -26,7 +25,16 @@
             <td>${meals.calories}</td>
         </tr>
     </c:forEach>
-
 </table>
+<br><br>
+
+<h3>Create new meal</h3>
+<form method="post" action="">
+    <label><input type="text" name="description"></label>Description<br>
+    <label><input type="number" name="calories"></label>Calories<br>
+    <label><input type="datetime-local" name="localDateTime"></label>Date<br>
+
+    <input type="submit" value="OK" name="OK"><br>
+</form>
 </body>
 </html>
