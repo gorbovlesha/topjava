@@ -39,8 +39,8 @@ public class MealServlet extends HttpServlet {
         if (action == null) {
             log.info("getAll");
             req.setAttribute("mealsList",
-                    MealsUtil.getMealsDTO(repository.getAll(), 2000));
-            req.getRequestDispatcher("/mealList.jsp").forward(req, resp);
+                    MealsUtil.getTos(repository.getAll(), 2000));
+            req.getRequestDispatcher("/meals.jsp").forward(req, resp);
         } else if(action.equals("delete")) {
             int id = getId(req);
             log.info("delete{}", id);
@@ -51,7 +51,7 @@ public class MealServlet extends HttpServlet {
                     new Meal(LocalDateTime.now(), "", 1000) :
                     repository.get(getId(req));
             req.setAttribute("meal", meal);
-            req.getRequestDispatcher("mealEdit.jsp").forward(req, resp);
+            req.getRequestDispatcher("editMeal.jsp").forward(req, resp);
         }
 
 
@@ -73,16 +73,6 @@ public class MealServlet extends HttpServlet {
         log.info(meal.isNew() ? "Create{}" : "Update{}", meal);
         repository.save(meal);
         resp.sendRedirect("meals");
-
-    }
-    private boolean requestIsValid(final HttpServletRequest req) {
-        final String description = req.getParameter("description");
-        final String calories = req.getParameter("calories");
-        final String localDateTime = req.getParameter("localDateTime");
-
-        return description != null && description.length() > 0 &&
-                calories != null && calories.length() > 0 &&
-                localDateTime != null && localDateTime.length() > 0;
 
     }
 }
