@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Meal {
 
-    private static final AtomicInteger idGenerator = new AtomicInteger(1);
 
-    private final int id;
+
+    private Integer id;
 
     private final LocalDateTime dateTime;
 
@@ -18,7 +18,13 @@ public class Meal {
     private final int calories;
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
-        this.id = idGenerator.getAndIncrement();
+        this.dateTime = dateTime;
+        this.description = description;
+        this.calories = calories;
+    }
+
+    public Meal(int id, LocalDateTime dateTime, String description, int calories) {
+        this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
@@ -26,6 +32,10 @@ public class Meal {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -46,5 +56,9 @@ public class Meal {
 
     public LocalTime getTime() {
         return dateTime.toLocalTime();
+    }
+
+    public boolean isNew() {
+        return id == null;
     }
 }
