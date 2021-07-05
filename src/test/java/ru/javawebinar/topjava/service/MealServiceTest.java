@@ -62,6 +62,10 @@ public class MealServiceTest extends TestCase {
         assertThrows(NotFoundException.class, () -> service.get(MEAL1_ID, USER_ID));
     }
     @Test
+    public void testDeleteNotFound() {
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND, USER_ID));
+    }
+    @Test
     public void testGetBetweenInclusive() {
         assertMatch(service.getBetweenInclusive(LocalDate.of(2020, Month.JANUARY, 30)
                 , LocalDate.of(2020, Month.JANUARY, 30), USER_ID), Arrays.asList(MEAL_4, MEAL_3, MEAL_2, MEAL_1));
@@ -72,16 +76,24 @@ public class MealServiceTest extends TestCase {
         assertMatch(service.getAll(USER_ID),allOfUser);
     }
 
+    @Test
     public void testUpdate() {
+        Meal updated = getUpdated();
+        service.update(updated, USER_ID);
+        assertMatch(service.get(updated.getId(), USER_ID), getUpdated());
+    }
+    @Test
+    public void testUpdateNotOwn() {
+        assertThrows(NotFoundException.class, () -> service.update(getUpdated(), ADMIN_ID));
     }
 
-    public void testCreate() {
-        Meal created = service.create(getNew(), USER_ID);
-        Integer newId = created.getId();
-        Meal newMeal = getNew();
-        newMeal.setId(newId);
-        assertMatch(created, newMeal);
-        assertMatch(service.get(newId, USER_ID), newMeal);
-
-    }
+//    public void testCreate() {
+//        Meal created = service.create(getNew(), USER_ID);
+//        Integer newId = created.getId();
+//        Meal newMeal = getNew();
+//        newMeal.setId(newId);
+//        assertMatch(created, newMeal);
+//        assertMatch(service.get(newId, USER_ID), newMeal);
+//
+//    }
 }
