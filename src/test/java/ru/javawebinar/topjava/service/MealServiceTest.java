@@ -86,14 +86,14 @@ public class MealServiceTest extends TestCase {
     public void testUpdateNotOwn() {
         assertThrows(NotFoundException.class, () -> service.update(getUpdated(), ADMIN_ID));
     }
+    @Test
+    public void testCreate() {
+        Meal created = service.create(getNew(), USER_ID);
+        Integer newId = created.getId();
+        Meal newMeal = getNew();
+        newMeal.setId(newId);
+        assertMatch(created, newMeal);
+        assertMatch(service.get(newId, USER_ID), newMeal);
 
-//    public void testCreate() {
-//        Meal created = service.create(getNew(), USER_ID);
-//        Integer newId = created.getId();
-//        Meal newMeal = getNew();
-//        newMeal.setId(newId);
-//        assertMatch(created, newMeal);
-//        assertMatch(service.get(newId, USER_ID), newMeal);
-//
-//    }
+    }
 }

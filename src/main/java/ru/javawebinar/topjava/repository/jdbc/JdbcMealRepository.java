@@ -27,7 +27,7 @@ public class JdbcMealRepository implements MealRepository {
 
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("users")
+                .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
 
         this.jdbcTemplate = jdbcTemplate;
@@ -47,11 +47,12 @@ public class JdbcMealRepository implements MealRepository {
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
             meal.setId(newId.intValue());
-        } else if (namedParameterJdbcTemplate.update(
-                "UPDATE meals SET description=:description, calories=:calories, date_time=:date_time " +
-                        "WHERE id=:id AND user_id=:user_id"
-                , map) == 0) {
-            return null;
+        } else {
+            if (namedParameterJdbcTemplate.update(
+                    "UPDATE meals SET description=:description, calories=:calories, date_time=:date_time " +
+                            "WHERE id=:id AND user_id=:user_id" , map) == 0) {
+                return null;
+            }
         }
         return meal;
     }
